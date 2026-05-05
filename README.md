@@ -124,6 +124,30 @@ docker compose up dev --build
 
 The dev service maps to `http://localhost:3001` by default. The production service maps to `http://localhost:3000` by default.
 
+## Full-stack Docker image
+
+The root `Dockerfile` builds a single-container image that starts PostgreSQL, Redis, the backend API, and the Next.js frontend together. Runtime data is stored under `/data`, so mount that path when deploying.
+
+```bash
+docker run -d \
+  --name novelai-router \
+  --restart unless-stopped \
+  -p 3000:3000 \
+  -p 127.0.0.1:4000:4000 \
+  -v novelai-router-data:/data \
+  -e WEB_ORIGIN=http://localhost:3000 \
+  -e ADMIN_EMAIL=admin@example.com \
+  -e ADMIN_PASSWORD=change-me-admin-password \
+  ezusagi43/novelai-router:latest
+```
+
+The GitHub Actions workflow at `.github/workflows/docker-image.yml` builds and pushes `ezusagi43/novelai-router:latest` on every push to `main`. Configure these repository secrets before relying on the workflow:
+
+```text
+DOCKERHUB_USERNAME
+DOCKERHUB_TOKEN
+```
+
 ## Backend setup
 
 ```bash
