@@ -26,7 +26,7 @@ export const apiErrorSchema = z.object({
 
 export const registerRequestSchema = z.object({
   email: z.string().trim().toLowerCase().email(),
-  password: z.string().min(12).max(200),
+  password: z.string().min(1).max(200),
 });
 
 export const loginRequestSchema = z.object({

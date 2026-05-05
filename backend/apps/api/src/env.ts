@@ -10,7 +10,7 @@ const envSchema = z.object({
   API_PORT: z.coerce.number().int().positive().default(4000),
   WEB_ORIGIN: z.string().default("http://localhost:3000"),
   ADMIN_EMAIL: z.string().email().optional(),
-  ADMIN_PASSWORD: z.string().min(12).optional(),
+  ADMIN_PASSWORD: z.string().min(1).optional(),
   STORAGE_ROOT: z.string().min(1).default(".data/storage"),
 });
 
