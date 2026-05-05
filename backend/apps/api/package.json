@@ -1,0 +1,41 @@
+{
+  "name": "@novelai-router/api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx watch src/main.ts",
+    "start": "node dist/src/main.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run --passWithNoTests",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "tsx prisma/seed.ts",
+    "novelai:health-check": "tsx scripts/health-check-account.ts",
+    "novelai:smoke-test": "tsx scripts/smoke-test-account.ts"
+  },
+  "dependencies": {
+    "@fastify/cookie": "^11.0.0",
+    "@fastify/cors": "^11.0.0",
+    "@fastify/multipart": "^10.0.0",
+    "@novelai-router/shared": "workspace:*",
+    "@prisma/client": "^6.19.0",
+    "argon2": "^0.44.0",
+    "bullmq": "^5.60.0",
+    "dotenv": "^17.0.0",
+    "fastify": "^5.6.0",
+    "ioredis": "^5.8.0",
+    "msgpackr": "^1.11.5",
+    "sharp": "^0.34.5",
+    "undici": "^7.16.0",
+    "zod": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "prisma": "^6.19.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0",
+    "vitest": "^3.2.0"
+  }
+}

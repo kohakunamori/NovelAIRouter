@@ -1,0 +1,230 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --font-sans: var(--font-source-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-eczar), ui-serif, Georgia, serif;
+  --font-mono: "Iosevka", ui-monospace, monospace;
+  --radius-sm: 3px;
+  --radius-md: 5px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+}
+
+:root {
+  --novelai-bg: rgb(19, 21, 44);
+  --novelai-panel: rgb(25, 27, 49);
+  --novelai-input: rgb(14, 15, 33);
+  --novelai-muted-surface: rgb(34, 37, 63);
+  --novelai-accent: rgb(245, 243, 194);
+  --novelai-accent-foreground: rgb(19, 21, 44);
+  --novelai-border: rgb(34, 37, 63);
+  --novelai-text: rgb(255, 255, 255);
+  --novelai-danger: rgb(255, 120, 120);
+  --background: var(--novelai-bg);
+  --foreground: var(--novelai-text);
+  --card: var(--novelai-panel);
+  --card-foreground: var(--novelai-text);
+  --popover: var(--novelai-panel);
+  --popover-foreground: var(--novelai-text);
+  --primary: var(--novelai-accent);
+  --primary-foreground: var(--novelai-accent-foreground);
+  --secondary: var(--novelai-muted-surface);
+  --secondary-foreground: var(--novelai-text);
+  --muted: var(--novelai-panel);
+  --muted-foreground: rgb(193, 196, 214);
+  --accent: var(--novelai-muted-surface);
+  --accent-foreground: var(--novelai-text);
+  --destructive: var(--novelai-danger);
+  --border: var(--novelai-border);
+  --input: var(--novelai-input);
+  --ring: rgba(245, 243, 194, 0.45);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html,
+  body {
+    @apply h-full;
+  }
+
+  html {
+    @apply bg-background font-sans text-foreground;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    background-color: var(--novelai-bg);
+  }
+
+  button {
+    @apply cursor-pointer;
+  }
+}
+
+@keyframes novelai-loader-slide {
+  0% {
+    transform: translateX(-120%);
+  }
+
+  50% {
+    transform: translateX(35%);
+  }
+
+  100% {
+    transform: translateX(165%);
+  }
+}
+
+@keyframes novelai-stage-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes novelai-stage-exit {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-8px) scale(1.01);
+  }
+}
+
+@layer utilities {
+  .font-heading {
+    font-family: var(--font-eczar), ui-serif, Georgia, serif;
+  }
+
+  .animate-novelai-loader {
+    animation: novelai-loader-slide 1.15s ease-in-out infinite;
+  }
+
+  .animate-novelai-loader-delayed {
+    animation: novelai-loader-slide 1.15s ease-in-out 0.14s infinite;
+  }
+
+  .animate-novelai-stage-enter {
+    animation: novelai-stage-enter 300ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .animate-novelai-stage-exit {
+    animation: novelai-stage-exit 260ms ease-in forwards;
+  }
+
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  .number-field {
+    appearance: textfield;
+    -moz-appearance: textfield;
+  }
+
+  .number-field::-webkit-outer-spin-button,
+  .number-field::-webkit-inner-spin-button {
+    appearance: none;
+    margin: 0;
+  }
+
+  .novelai-slider {
+    appearance: none;
+    background: rgb(14, 15, 33);
+    border-radius: 3px;
+  }
+
+  .novelai-slider::-webkit-slider-runnable-track {
+    height: 22px;
+    border-radius: 3px;
+    background: transparent;
+  }
+
+  .novelai-slider::-webkit-slider-thumb {
+    appearance: none;
+    margin-top: 0;
+    height: 22px;
+    width: 14px;
+    border: 0;
+    border-radius: 3px;
+    background: rgb(34, 37, 63);
+    cursor: pointer;
+  }
+
+  .novelai-slider:focus::-webkit-slider-thumb,
+  .novelai-slider:hover::-webkit-slider-thumb {
+    background: rgb(245, 243, 194);
+  }
+
+  .novelai-slider::-moz-range-track {
+    height: 22px;
+    border: 0;
+    border-radius: 3px;
+    background: transparent;
+  }
+
+  .novelai-slider::-moz-range-thumb {
+    height: 22px;
+    width: 14px;
+    border: 0;
+    border-radius: 3px;
+    background: rgb(34, 37, 63);
+    cursor: pointer;
+  }
+
+  .novelai-slider:focus::-moz-range-thumb,
+  .novelai-slider:hover::-moz-range-thumb {
+    background: rgb(245, 243, 194);
+  }
+
+}
+
+nextjs-portal {
+  display: none !important;
+}
