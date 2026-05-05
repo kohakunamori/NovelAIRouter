@@ -11,3 +11,6 @@ backend/.env
 backend/apps/api/.env
 *.log
 *.tsbuildinfo
+.trellis/
+.claude/
+AGENTS.md

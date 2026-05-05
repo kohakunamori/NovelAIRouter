@@ -1,5 +1,7 @@
 const backendOrigin = process.env.NOVELAI_ROUTER_ORIGIN ?? "http://127.0.0.1:4000"
 
+type NovelAIRouterPathContext = { params: Promise<{ path: string[] }> }
+
 const requestHeaderAllowlist = ["accept", "content-type", "cookie", "last-event-id"]
 const responseHeaderBlocklist = new Set(["connection", "content-encoding", "content-length", "keep-alive", "transfer-encoding"])
 
@@ -47,6 +49,13 @@ function buildBackendUnavailableResponse(path: string, error: unknown) {
     },
     { status: 503 }
   )
+}
+
+export function createNovelAIRouterPathProxy(prefix: string) {
+  return async (request: Request, context: NovelAIRouterPathContext) => {
+    const { path } = await context.params
+    return proxyNovelAIRouterRequest(request, `${prefix}/${path.join("/")}`)
+  }
 }
 
 export async function proxyNovelAIRouterRequest(request: Request, path: string) {

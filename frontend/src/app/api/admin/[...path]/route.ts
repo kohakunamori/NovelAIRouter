@@ -1,23 +1,10 @@
-import { proxyNovelAIRouterRequest } from "@/app/api/_lib/novelai-router-proxy"
+import { createNovelAIRouterPathProxy } from "@/app/api/_lib/novelai-router-proxy"
 
 export const dynamic = "force-dynamic"
 
-export async function GET(request: Request, context: { params: Promise<{ path: string[] }> }) {
-  const { path } = await context.params
-  return proxyNovelAIRouterRequest(request, `/api/admin/${path.join("/")}`)
-}
+const proxyAdminRequest = createNovelAIRouterPathProxy("/api/admin")
 
-export async function POST(request: Request, context: { params: Promise<{ path: string[] }> }) {
-  const { path } = await context.params
-  return proxyNovelAIRouterRequest(request, `/api/admin/${path.join("/")}`)
-}
-
-export async function PATCH(request: Request, context: { params: Promise<{ path: string[] }> }) {
-  const { path } = await context.params
-  return proxyNovelAIRouterRequest(request, `/api/admin/${path.join("/")}`)
-}
-
-export async function DELETE(request: Request, context: { params: Promise<{ path: string[] }> }) {
-  const { path } = await context.params
-  return proxyNovelAIRouterRequest(request, `/api/admin/${path.join("/")}`)
-}
+export const DELETE = proxyAdminRequest
+export const GET = proxyAdminRequest
+export const PATCH = proxyAdminRequest
+export const POST = proxyAdminRequest
