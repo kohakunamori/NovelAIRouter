@@ -14,3 +14,4 @@ backend/apps/api/.env
 .trellis/
 .claude/
 AGENTS.md
+.playwright-mcp/
