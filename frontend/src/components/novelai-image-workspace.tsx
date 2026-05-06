@@ -41,7 +41,7 @@ export function NovelAIImageWorkspace() {
     selectedRun,
     state,
   } = useNovelAIWorkspaceState()
-  const [viewportWidth, setViewportWidth] = useState(1280)
+  const [viewportWidth, setViewportWidth] = useState(DESKTOP_SHELL_BREAKPOINT - 1)
   const [availableAnlas, setAvailableAnlas] = useState(0)
   const [accountState, setAccountState] = useState<NovelAIAccountState>("loading")
   const [isAdmin, setIsAdmin] = useState(false)
@@ -56,9 +56,10 @@ export function NovelAIImageWorkspace() {
   const resizeFrameRef = useRef<number | null>(null)
   const pendingSettingsWidthRef = useRef<number | null>(null)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const handleResize = () => setViewportWidth(window.innerWidth)
 
+    handleResize()
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
   }, [])
