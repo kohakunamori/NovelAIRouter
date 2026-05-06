@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils"
 
 interface NovelAIMobileTopBarProps {
   anlas: number
-  onOpenSettings: () => void
+  onOpenMenu: () => void
 }
 
 interface NovelAIMobileBottomBarProps {
@@ -24,7 +24,7 @@ interface NovelAIMobileBottomBarProps {
   onOpenSettings: () => void
 }
 
-export function NovelAIMobileTopBar({ anlas, onOpenSettings }: NovelAIMobileTopBarProps) {
+export function NovelAIMobileTopBar({ anlas, onOpenMenu }: NovelAIMobileTopBarProps) {
   return (
     <div className="fixed inset-x-0 top-0 z-30 flex h-[50px] items-center border-b border-white/5 bg-[rgb(25,27,49)] px-2 text-white lg:hidden">
       <button className="flex h-12 w-[48px] items-center justify-center" type="button">
@@ -42,7 +42,7 @@ export function NovelAIMobileTopBar({ anlas, onOpenSettings }: NovelAIMobileTopB
           <NovelAIPlusIcon className="h-[14px] w-[14px] text-white" />
         </button>
       </div>
-      <button className="flex h-12 w-[48px] items-center justify-center" onClick={onOpenSettings} type="button">
+      <button aria-label="Open menu" className="flex h-12 w-[48px] items-center justify-center" onClick={onOpenMenu} type="button">
         <NovelAIHamburgerIcon className="h-4 w-[18px] text-white" />
       </button>
     </div>
@@ -63,7 +63,7 @@ export function NovelAIMobileBottomBar({ cost, isLooping, onCtrlGenerate, onGene
   return (
     <div className="fixed inset-x-0 bottom-0 z-30 border-t border-white/5 bg-[rgb(25,27,49)] px-[10px] pb-[10px] pt-[10px] lg:hidden">
       <div className="flex items-center gap-[10px]">
-        <button className="flex h-10 w-10 items-center justify-center rounded-[3px] text-white/85" onClick={onOpenSettings} type="button">
+        <button aria-label="Open generation settings" className="flex h-10 w-10 items-center justify-center rounded-[3px] text-white/85" onClick={onOpenSettings} type="button">
           <NovelAISettingsIcon className="h-4 w-4 text-white" />
         </button>
         <button
@@ -102,7 +102,7 @@ export function NovelAIMobileBottomBar({ cost, isLooping, onCtrlGenerate, onGene
           <span>{isLooping ? "Looping…" : "Generate 1 Image"}</span>
           <span className="ml-auto inline-flex min-w-[32px] items-center justify-center rounded-[3px] bg-[rgb(19,21,44)] px-2.5 py-1 text-[rgb(245,243,194)]">{cost}</span>
         </button>
-        <button className="flex h-10 w-10 items-center justify-center rounded-[3px] text-white/85" onClick={onOpenHistory} type="button">
+        <button aria-label="Open history" className="flex h-10 w-10 items-center justify-center rounded-[3px] text-white/85" onClick={onOpenHistory} type="button">
           <NovelAIHistoryIcon className="h-4 w-4 text-white" />
         </button>
       </div>

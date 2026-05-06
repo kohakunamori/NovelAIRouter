@@ -13,10 +13,11 @@ import { NovelAIImagePreview } from "@/components/novelai-image-preview"
 import { NovelAILoginPanel } from "@/components/novelai-login-panel"
 import { NovelAIMobileBottomBar, NovelAIMobileTopBar } from "@/components/novelai-mobile-chrome"
 import { NovelAIQuickstartGallery } from "@/components/novelai-quickstart-gallery"
-import { NovelAISettingsPanel, NovelAISettingsPanelContent } from "@/components/novelai-settings-panel"
+import { NovelAILayoutSettingsPanel, NovelAILeftRailMenu, NovelAISettingsPanel, NovelAISettingsPanelContent } from "@/components/novelai-settings-panel"
 import { characterTemplates, imageModelOptions, imagePresets, quickstartSamples, samplerOptions } from "@/lib/novelai-demo-data"
 import { estimateNovelAIGenerateAnlas } from "@/lib/novelai-anlas-estimator"
-import { getCurrentUser } from "@/lib/novelai-admin-api"
+import { getCurrentUser, logout as logoutCurrentUser } from "@/lib/novelai-admin-api"
+import { useNovelAIUiLanguage } from "@/lib/novelai-ui-language"
 import { useNovelAIWorkspaceState } from "@/lib/use-novelai-workspace-state"
 
 const DESKTOP_SHELL_BREAKPOINT = 960
@@ -46,6 +47,7 @@ export function NovelAIImageWorkspace() {
   const [accountState, setAccountState] = useState<NovelAIAccountState>("loading")
   const [isAdmin, setIsAdmin] = useState(false)
   const [isLoginPanelOpen, setIsLoginPanelOpen] = useState(false)
+  const [isMobileLayoutSettingsPanelOpen, setIsMobileLayoutSettingsPanelOpen] = useState(false)
   const [showStreamedImagesUnprocessed, setShowStreamedImagesUnprocessed] = useState(false)
   const [galleryOrderSeed, setGalleryOrderSeed] = useState("default")
   const [isLooping, setIsLooping] = useState(false)
@@ -55,6 +57,7 @@ export function NovelAIImageWorkspace() {
   const resizeStateRef = useRef<{ startX: number; startWidth: number } | null>(null)
   const resizeFrameRef = useRef<number | null>(null)
   const pendingSettingsWidthRef = useRef<number | null>(null)
+  const { language, setLanguage } = useNovelAIUiLanguage()
 
   useLayoutEffect(() => {
     const handleResize = () => setViewportWidth(window.innerWidth)
@@ -218,6 +221,12 @@ export function NovelAIImageWorkspace() {
     }
   }
 
+  const handleMobileLogout = async () => {
+    await logoutCurrentUser()
+    setAccountState("anonymous")
+    actions.closeMobilePanel()
+  }
+
   useEffect(() => {
     const prev = prevStageRef.current
     prevStageRef.current = state.ui.stage
@@ -295,7 +304,7 @@ export function NovelAIImageWorkspace() {
       {state.ui.requestErrorMessage ? (
         <FloatingFeedbackPanel message={{ text: state.ui.requestErrorMessage, tone: "error" }} onDismiss={actions.clearRequestError} />
       ) : null}
-      {!isDesktopShell ? <NovelAIMobileTopBar anlas={availableAnlas} onOpenSettings={() => actions.openMobilePanel("settings")} /> : null}
+      {!isDesktopShell ? <NovelAIMobileTopBar anlas={availableAnlas} onOpenMenu={() => actions.openMobilePanel("menu")} /> : null}
       <div className="flex h-full min-w-0">
         {isDesktopShell ? (
           <div className="relative shrink-0" style={{ width: `${settingsWidth}px` }}>
@@ -384,8 +393,25 @@ export function NovelAIImageWorkspace() {
       ) : null}
 
       {!isDesktopShell && state.ui.activeMobilePanel ? (
-        <MobilePanelOverlay onClose={actions.closeMobilePanel} title={state.ui.activeMobilePanel === "settings" ? "Settings" : "History"}>
-          {state.ui.activeMobilePanel === "settings" ? (
+        <MobilePanelOverlay onClose={actions.closeMobilePanel} title={state.ui.activeMobilePanel === "menu" ? "Menu" : state.ui.activeMobilePanel === "settings" ? "Generation Settings" : "History"}>
+          {state.ui.activeMobilePanel === "menu" ? (
+            <NovelAILeftRailMenu
+              accountState={accountState}
+              isAdmin={isAdmin}
+              language={language}
+              onClose={actions.closeMobilePanel}
+              onLogout={() => void handleMobileLogout()}
+              onOpenLayoutSettingsPanel={() => {
+                setIsMobileLayoutSettingsPanelOpen(true)
+                actions.closeMobilePanel()
+              }}
+              onOpenLoginPanel={() => {
+                setIsLoginPanelOpen(true)
+                actions.closeMobilePanel()
+              }}
+              onSetLanguage={setLanguage}
+            />
+          ) : state.ui.activeMobilePanel === "settings" ? (
             <div className="bg-[rgb(25,27,49)]">
               <NovelAISettingsPanelContent
                 accountState={accountState}
@@ -446,6 +472,15 @@ export function NovelAIImageWorkspace() {
             </div>
           )}
         </MobilePanelOverlay>
+      ) : null}
+
+      {!isDesktopShell ? (
+        <NovelAILayoutSettingsPanel
+          onClose={() => setIsMobileLayoutSettingsPanelOpen(false)}
+          onToggleShowStreamedImagesUnprocessed={() => setShowStreamedImagesUnprocessed((current) => !current)}
+          open={isMobileLayoutSettingsPanelOpen}
+          showStreamedImagesUnprocessed={showStreamedImagesUnprocessed}
+        />
       ) : null}
 
       <NovelAILoginPanel

@@ -50,7 +50,7 @@ import { novelAIUiLanguageOptions, useNovelAIUiLanguage, type NovelAIUiLanguage 
 import { appendPromptFragment, cn, estimatePromptTokens } from "@/lib/utils"
 import type { CharacterPromptState, CharacterTemplate, ImageModelOption, ImagePreset, NovelAIImageAsset, NovelAIImageEditorMode, NovelAIWorkspaceState, PromptChunk, PromptChunkCategory, PromptChunkLibrary, UploadSlotKey } from "@/types/novelai"
 
-type NovelAIAccountState = "loading" | "anonymous" | "authenticated"
+export type NovelAIAccountState = "loading" | "anonymous" | "authenticated"
 
 interface NovelAISettingsPanelContentProps {
   accountState: NovelAIAccountState
@@ -462,7 +462,7 @@ export function NovelAISettingsPanel({ accountState, isAdmin, isLooping, anlas, 
   )
 }
 
-function NovelAILeftRailMenu({
+export function NovelAILeftRailMenu({
   accountState,
   isAdmin,
   language,
@@ -486,7 +486,7 @@ function NovelAILeftRailMenu({
   const activeLanguageOption = novelAIUiLanguageOptions.find((option) => option.id === language) ?? novelAIUiLanguageOptions[0]
 
   return (
-    <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden bg-[rgb(19,21,44)]">
+    <div className="relative flex h-full min-h-0 flex-1 flex-col overflow-hidden bg-[rgb(19,21,44)]">
       <div className="scrollbar-thin flex-1 overflow-y-auto px-5 pb-20 pt-4">
         <div className="flex items-center gap-4 py-[10px]">
           <div className="flex h-[56px] w-[56px] shrink-0 items-center justify-center rounded-full bg-[rgb(151,115,255)] text-white shadow-[0_0_0_2px_rgba(255,255,255,0.03)]">
@@ -566,7 +566,7 @@ function NovelAILeftRailMenu({
   )
 }
 
-function NovelAILayoutSettingsPanel({
+export function NovelAILayoutSettingsPanel({
   onClose,
   onToggleShowStreamedImagesUnprocessed,
   open,
