@@ -17,7 +17,7 @@ export async function overviewRoutes(app: FastifyInstance) {
 
   app.get("/api/admin/overview", { preHandler: requireAdmin }, async () => {
     const last24hCutoff = new Date(Date.now() - 24 * 60 * 60 * 1000);
-    const [accounts, settings, policies, recentJobs, generationCounts, last24h, totalTrackedAnlas] = await Promise.all([
+    const [accounts, settings, policies, recentJobs, generationCounts, last24h, totalTrackedAnlas, storageTotals] = await Promise.all([
       prisma.novelAiAccount.findMany({
         select: {
           id: true,
@@ -60,6 +60,9 @@ export async function overviewRoutes(app: FastifyInstance) {
       }),
       prisma.generationJob.aggregate({
         _sum: { actualNovelAiAnlas: true },
+      }),
+      prisma.asset.aggregate({
+        _sum: { byteSize: true },
       }),
     ]);
 
@@ -110,6 +113,9 @@ export async function overviewRoutes(app: FastifyInstance) {
         total: policies.length,
         enabled: policies.filter((policy) => policy.enabled).length,
         disabled: policies.filter((policy) => !policy.enabled).length,
+      },
+      storage: {
+        totalBytes: storageTotals._sum.byteSize ?? 0,
       },
       settings: {
         anlasMultiplier: Number(settings.anlasMultiplier),

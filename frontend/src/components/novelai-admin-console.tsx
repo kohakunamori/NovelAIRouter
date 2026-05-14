@@ -1038,10 +1038,11 @@ export function NovelAIAdminConsole() {
                 </div>
 
                 {accountConfig ? (
-                  <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+                  <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
                     <CompactInfo label={language === "zh" ? "代理" : "Proxy"} value={accountConfig.proxyConfigured ? (language === "zh" ? "已配置" : "Configured") : t("Missing")} />
                     <CompactInfo label={language === "zh" ? "健康检查" : "Health checks"} value={accountConfig.healthChecksEnabled ? t("Enabled") : (language === "zh" ? "已禁用" : "Disabled")} />
                     <CompactInfo label={language === "zh" ? "冒烟测试" : "Smoke tests"} value={accountConfig.smokeTestsEnabled ? t("Enabled") : (language === "zh" ? "已禁用" : "Disabled")} />
+                    <CompactInfo label={language === "zh" ? "存储占用" : "Storage usage"} value={overview ? formatStorageUsage(overview.storage.totalBytes) : "—"} />
                   </div>
                 ) : null}
 
@@ -2481,6 +2482,18 @@ function formatAnlasUsage(actual: number | null, estimated: number | null, langu
   }
 
   return estimated === null ? "—" : language === "zh" ? `估算 ${estimated}` : `Est. ${estimated}`
+}
+
+function formatStorageUsage(totalBytes: number) {
+  if (totalBytes <= 0) {
+    return "0 B"
+  }
+
+  const units = ["B", "KB", "MB", "GB", "TB"] as const
+  const unitIndex = Math.min(Math.floor(Math.log(totalBytes) / Math.log(1024)), units.length - 1)
+  const value = totalBytes / 1024 ** unitIndex
+  const digits = value >= 100 || unitIndex === 0 ? 0 : value >= 10 ? 1 : 2
+  return `${value.toFixed(digits)} ${units[unitIndex]}`
 }
 
 function formatJobParams(job: AdminJobListResponse["jobs"][number]) {

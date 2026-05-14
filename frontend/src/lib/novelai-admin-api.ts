@@ -231,6 +231,9 @@ export interface AdminOverview {
     enabled: number
     disabled: number
   }
+  storage: {
+    totalBytes: number
+  }
   settings: PlatformSettings
   galleryOrder: GalleryOrder
   recentJobs: Array<{

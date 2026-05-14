@@ -325,6 +325,9 @@ export const adminOverviewSchema = z.object({
     enabled: z.number().int().nonnegative(),
     disabled: z.number().int().nonnegative(),
   }),
+  storage: z.object({
+    totalBytes: z.number().int().nonnegative(),
+  }),
   settings: platformSettingsSchema,
   galleryOrder: galleryOrderResponseSchema,
   recentJobs: z.array(z.object({
